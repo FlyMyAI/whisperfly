@@ -28,7 +28,7 @@ import urllib.request
 import uuid
 
 BACKEND = os.environ.get("FLYMYAI_BACKEND", "https://backend.flymy.ai/api/v1")
-AGENT_UUID = "057ad1c9-8528-40f4-9b74-bfa50c112b76"  # Voice Inbox
+AGENT_UUID = os.environ.get("WHISPERFLY_AGENT_UUID", "057ad1c9-8528-40f4-9b74-bfa50c112b76")
 MIC_DEVICE = os.environ.get("VOICENOTE_MIC", ":0")  # avfoundation audio index
 NOTES_DIR = pathlib.Path.home() / "VoiceNotes"
 POLL_INTERVAL_S = 1.5

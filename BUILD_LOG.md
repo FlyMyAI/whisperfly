@@ -49,8 +49,34 @@ All timestamps UTC.
 - Functionally closest to Wispr: **TypeWhisper** (GPL-3, macOS, full checklist), **FluidVoice** (GPL-3 open-core, 8k stars, streaming preview), **VoiceInk** (GPL-3, macOS, ~90% parity).
 - Best MIT fork bases: **Amical** (MIT, Mac+Win, Electron/TS — the only OSS with Wispr-style auto per-app tone), **OpenLess** (MIT, Tauri Rust+React, Mac+Win+Android — deliberate Typeless clone, China-centric defaults to strip), **Handy** (MIT, 26.6k stars, Tauri/Rust — minimal but rock-solid base; upstream feature-freeze = fork-friendly).
 
+## 2026-07-15 (continued) — optimization, naming, FlyVoice
+
+- **23:20** — Agent optimized: model gpt-5.5 -> **o4-mini**, prompt v2: forbid sandbox, build notion_url from page_id (no extraction call), target 3 tool calls + save_result.
+- **23:21** — Optimized run `awq-pcls-iiy`: exactly 4 tool calls, ~38s, **$0.041** vs $0.215 (5.2x). BUT all 5 o4-mini LLM calls billed **$0.000000** — SECOND missing LLMChargeRates row (after claude-sonnet-4-6). Froze as compilation 241.
+- **23:2x** — Name check (background agent, 55k tokens): **VoiceFly = RISKY** — active US voice-AI startup voiceflyai.com (DropFly, daily commits) + VOICEFLOW live USPTO application in classes 9/42 + VOICEFLIGHT registered in speech recognition. Denis picked **FlyVoice** instead (FlyVoice/FlySay/Dictafly backup check running).
+- **23:2x** — Denis added the o4-mini LLMChargeRates row: $1.10 in / $0.275 cache-read / $4.40 out per 1M.
+- **23:30** — Frozen run `tut-yiix-cfp` (compilation 241): completed but **dirty** — $0.090, 10 LLM calls, 6 tool exceptions:
+  - whisper 404 x2: **o4-mini RETYPED the long GCS URL with a typo** (`ba9735e` vs `ba973e`) — small models reconstruct args instead of copying; self-corrected on attempt 3.
+  - notion_append_block_children 400 x4: o4-mini builds the `children` block shape wrong; gave up — **page body left EMPTY while the agent reported success** (silent partial failure).
+  - Billing side confirmed fixed: every o4-mini call now bills (~$0.005/call).
+- **23:33** — Prompt v3: use `notion_append_text` (server builds the block — kills the 400 class), "COPY audio_url character-for-character", honest `append_failed` reporting rule.
+- **23:34** — Run `qte-mkye-seb`: **CLEAN** — exactly 4 tool calls, zero retries, ~42s, **$0.083** ($0.042 LLM + $0.024 whisper + $0.017 notion). Page body verified present. Frozen as **compilation 242 (FINAL)**.
+- Note: whisper tool billed $0.014-0.035 across runs for the SAME clip — execution-duration billing makes per-call cost non-deterministic.
+
+### Updated cost picture (real, billed)
+| Version | $/note | Latency | Notes |
+|---|---|---|---|
+| v1 gpt-5.5 draft | $0.256 | ~60s | 6 LLM turns + sandbox waste |
+| v1 gpt-5.5 frozen | $0.215 | ~49s | still sandbox URL-extraction |
+| v3 o4-mini frozen (242) | **$0.083** | **~42s** | 4 calls, clean, honest billing |
+
+vs Wispr $12/mo: break-even ~145 notes/mo (~5/day); at 10 notes/day **$25/mo** — 2x Wispr, down from 5x. Remaining fat: whisper execution-duration billing (~$0.07/audio-min ≈ 11x OpenAI list) + agent-loop LLM overhead (~12k ctx/turn).
+
+### Naming
+~~Voice Inbox~~ (working title) -> ~~VoiceFly~~ (blocked: voiceflyai.com + Voiceflow USPTO 9/42) -> **FlyVoice** (Denis's pick, collision check pending).
+
 ## Next steps
-- [ ] Optimize the agent (steps 1-3 above), re-freeze, re-measure $/note.
-- [ ] Hotkey wrapper for the client (menubar / Hammerspoon binding around voicenote.py).
-- [ ] Pick fork base for the real frontend (Handy vs OpenLess vs Amical) after Denis's call.
-- [ ] Platform: STT into run_model + cheap text endpoint + fix sonnet-4-6 $0.00 rate row.
+- [x] Optimize the agent, re-freeze, re-measure $/note ($0.215 -> $0.083, compilation 242).
+- [ ] macOS app: fork **Handy** -> FlyVoice .dmg (npm/cargo build awaiting Denis's explicit repo confirmation for the sandbox).
+- [ ] Hotkey wrapper fallback (Hammerspoon around voicenote.py) if app path stalls.
+- [ ] Platform: STT into run_model + cheap text endpoint + sonnet-4-6 rate row (o4-mini DONE by Denis).

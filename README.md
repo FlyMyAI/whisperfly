@@ -1,6 +1,6 @@
-# FlyVoice
+# WhisperFly
 
-FlyVoice (ex-Voice Inbox, ex-VoiceFly - naming history in BUILD_LOG). E2E demo: dictate a voice note locally -> FlyMyAI cloud agent transcribes (cloud STT), cleans it up, extracts keywords (incl. spoken tags like "тег демо") -> files it into a Notion database -> returns the text to your clipboard + local archive (~/VoiceNotes).
+WhisperFly (naming history: Voice Inbox -> VoiceFly -> FlyVoice -> WhisperFly, see BUILD_LOG). E2E demo: dictate a voice note locally -> FlyMyAI cloud agent transcribes (cloud STT), cleans it up, extracts keywords (incl. spoken tags like "тег демо") -> files it into a Notion database -> returns the text to your clipboard + local archive (~/VoiceNotes).
 
 Built live with Claude Code (brain) + FlyMyAI MCP (hands). See BUILD_LOG.md for the full timestamped build history, real billed costs, and the Wispr Flow comparison.
 

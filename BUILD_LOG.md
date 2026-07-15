@@ -80,3 +80,8 @@ vs Wispr $12/mo: break-even ~145 notes/mo (~5/day); at 10 notes/day **$25/mo** â
 - [ ] macOS app: fork **Handy** -> FlyVoice .dmg (npm/cargo build awaiting Denis's explicit repo confirmation for the sandbox).
 - [ ] Hotkey wrapper fallback (Hammerspoon around voicenote.py) if app path stalls.
 - [ ] Platform: STT into run_model + cheap text endpoint + sonnet-4-6 rate row (o4-mini DONE by Denis).
+
+## 2026-07-15 â€” final name: WhisperFly
+- Denis picked **WhisperFly** (over FlySay which scanned cleanest). Risk accepted and documented: phonetic proximity to Wispr Flow ("Wispr" = stylized "whisper"), crowded whisper-* namespace (superwhisper, MacWhisper, OpenWhispr), OpenAI model-name branding guidelines. Product name only; can be re-skinned in minutes if it ever bites.
+- Vanilla Handy build: first attempt failed (repo requires **bun** for beforeBuildCommand); installed bun 1.3.14, rebuild running.
+- Integration design locked: hook right after Handy's WAV save (`actions.rs`), detached async task -> upload WAV -> run-loop compilation 242 -> Notion; local paste stays instant, cloud filing is fire-and-forget. New `src-tauri/src/whisperfly.rs`, settings fields `whisperfly_enabled` + `flymyai_api_key` (env fallback), reqwest needs `multipart` feature.

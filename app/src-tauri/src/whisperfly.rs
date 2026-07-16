@@ -13,8 +13,11 @@ use tauri::AppHandle;
 use crate::settings::get_settings;
 
 const DEFAULT_BACKEND: &str = "https://backend.flymy.ai/api/v1";
+// Fast polls early (agent runs are trending toward ~10-20s), then back off.
+const POLL_FAST: Duration = Duration::from_millis(800);
+const POLL_FAST_ATTEMPTS: u32 = 25; // ~20s of fast polling
 const POLL_INTERVAL: Duration = Duration::from_secs(2);
-const POLL_ATTEMPTS: u32 = 120; // 4 min ceiling; agent runs are ~40-60s
+const POLL_ATTEMPTS: u32 = 140; // ~4.5 min ceiling total
 
 fn backend_base() -> String {
     std::env::var("FLYMYAI_BACKEND")
@@ -167,9 +170,14 @@ async fn file_voice_note(api_key: &str, agent_uuid: &str, wav: &PathBuf) -> Resu
         .to_string();
     debug!("WhisperFly: cloud run {} started", execution_id);
 
-    // 3) Poll until settled.
-    for _ in 0..POLL_ATTEMPTS {
-        tokio::time::sleep(POLL_INTERVAL).await;
+    // 3) Poll until settled: fast at first, then every 2s.
+    for attempt in 0..POLL_ATTEMPTS {
+        tokio::time::sleep(if attempt < POLL_FAST_ATTEMPTS {
+            POLL_FAST
+        } else {
+            POLL_INTERVAL
+        })
+        .await;
         let st: Value = client
             .get(format!("{base}/agents/executions/{execution_id}/"))
             .header("X-API-KEY", api_key)

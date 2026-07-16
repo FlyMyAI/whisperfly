@@ -7,11 +7,27 @@
 
 ## How we did it
 
-```
-   hotkey ──▶ WhisperFly.app ──WAV──▶ FlyMy.AI agent ──▶ cloud STT + cleanup + tags
-                    ▲                        │                      │
-                    └──── cleaned text ◀─────┘                      └──▶ your Notion
-              pasted at your cursor              ($0.031/note, the agent does everything)
+```mermaid
+flowchart LR
+    U(["🎙️ you press a hotkey<br/>and <b>speak</b>"]) --> APP
+
+    subgraph APP["💻 WhisperFly (open-source app)"]
+        L["local ASR →<br/>instant paste"]
+    end
+
+    APP -->|audio| CLOUD
+    subgraph CLOUD["☁️ FlyMy.AI cloud agent — the engine"]
+        STT["cloud STT → cleanup →<br/>keywords → file it"]
+    end
+
+    APP --> CUR(["⌨️ text at your cursor<br/>instantly"])
+    CLOUD --> NOTION(["🗒️ your Notion<br/>cleaned + tagged · <b>$0.031/note</b>"])
+
+    classDef you fill:#0b7285,stroke:#0b7285,color:#fff;
+    classDef app fill:#5f3dc4,stroke:#5f3dc4,color:#fff;
+    classDef cloud fill:#1864ab,stroke:#1864ab,color:#fff;
+    classDef out fill:#2b8a3e,stroke:#2b8a3e,color:#fff;
+    class U you; class L app; class STT cloud; class CUR,NOTION out;
 ```
 
 Open-source app shell (fork of [Handy](https://github.com/cjpais/Handy), MIT) + one FlyMy.AI agent, frozen into a fixed pipeline. The agent IS the engine - the app just records and pastes.

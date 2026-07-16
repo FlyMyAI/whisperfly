@@ -96,3 +96,9 @@ vs Wispr $12/mo: break-even ~145 notes/mo (~5/day); at 10 notes/day **$25/mo** �
   - Conclusion applied to marketing: lead with "dictation is local and $0" + measured "$0.083/note" for cloud filing; provider-floor numbers only as clearly-labeled theory. Closing the floor-vs-bill gap = the platform-primitives work (direct STT endpoint, light LLM endpoint).
 - Custom dictionary (the GTM differentiator) confirmed implementable TODAY on both paths: whisper tool has a `prompt` keyterm param; local Handy has custom words via initial_prompt.
 - Marketing/quality/privacy claim rules codified in the hub's **PLAYBOOK.md** (only own-bill numbers, no unverifiable accuracy claims, literally-true privacy wording, name-check before naming).
+
+## 2026-07-16 — Cloud settings UI, launch-and-go interface, final self-test
+
+- **00:1x-00:2x** — App v0.2: new sidebar section **FlyMy.AI Cloud** (enable toggle, masked API key, agent id prefilled with the public WhisperFly agent, Connect Notion / Open FlyMy.AI buttons). Interface trimmed for launch-and-go: Advanced + History hidden behind a "Show advanced sections" toggle in General (UI-only gate, zero code removed). Env overrides for terminal testing: WHISPERFLY_CLOUD=1, FLYMYAI_API_KEY, WHISPERFLY_AGENT_UUID. Rust: 4 new settings commands; bindings.ts patched in generator style (runtime regeneration will produce the same).
+- **00:20** — Self-test per the new PLAYBOOK bar: frozen compilation 242 run `hlk-sbzw-dww` - CLEAN (4 tool calls, 0 retries, ~47s, **$0.096**), Notion row verified INCLUDING page body. Cost range over 3 frozen runs: $0.08-0.10 (whisper duration-billing variance).
+- **00:23** — Final **WhisperFly_0.9.3_aarch64.dmg** (40MB app, ad-hoc signed, dmg mount-verified; binary smoke: cloud settings symbols + UI strings present in bundle). Hub renamed to **build-with-flymyai**; AGENTS.md + build-flymyai-app skill added there.

@@ -83,23 +83,18 @@ const CloudOnboarding: React.FC<CloudOnboardingProps> = ({ onComplete }) => {
           <button
             type="button"
             className={buttonClass}
-            onClick={() => openUrl(FLYMYAI_URL)}
+            onClick={() => openUrl(PUBLIC_AGENT_URL)}
           >
             {t("cloudOnboarding.step1.button")}
           </button>
           <Input
-            type="password"
-            value={apiKey}
-            onChange={(e) => setApiKey(e.target.value)}
+            type="text"
+            value={agentRef}
+            onChange={(e) => setAgentRef(e.target.value)}
             placeholder={t("cloudOnboarding.step1.placeholder")}
             variant="compact"
-            className={apiKey && !keyLooksValid ? "border-red-500" : ""}
+            className="font-mono"
           />
-          {apiKey && !keyLooksValid && (
-            <p className="text-xs text-red-500">
-              {t("cloudOnboarding.errors.badKey")}
-            </p>
-          )}
         </div>
 
         <div className={stepClass}>
@@ -110,18 +105,23 @@ const CloudOnboarding: React.FC<CloudOnboardingProps> = ({ onComplete }) => {
           <button
             type="button"
             className={buttonClass}
-            onClick={() => openUrl(PUBLIC_AGENT_URL)}
+            onClick={() => openUrl(FLYMYAI_URL)}
           >
             {t("cloudOnboarding.step2.button")}
           </button>
           <Input
-            type="text"
-            value={agentRef}
-            onChange={(e) => setAgentRef(e.target.value)}
+            type="password"
+            value={apiKey}
+            onChange={(e) => setApiKey(e.target.value)}
             placeholder={t("cloudOnboarding.step2.placeholder")}
             variant="compact"
-            className="font-mono"
+            className={apiKey && !keyLooksValid ? "border-red-500" : ""}
           />
+          {apiKey && !keyLooksValid && (
+            <p className="text-xs text-red-500">
+              {t("cloudOnboarding.errors.badKey")}
+            </p>
+          )}
         </div>
 
         {error && <p className="text-sm text-red-500 text-center">{error}</p>}

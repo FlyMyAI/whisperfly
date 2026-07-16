@@ -135,3 +135,7 @@ Backend MR 590 shipped (prod v3.4394): gpt-4.1-mini/nano in the agent model list
 | LLM turns / tool calls | 6 / 5 | 5 / 4 | 4 / 3 |
 
 8x cheaper and 2x faster than the first working version. Remaining latency = whisper tool (~5-10s) + celery pickup + 4 mini turns; the next big step is script-mode frozen execution (platform work, deferred).
+
+## 2026-07-16 — v0.5: Models tab removed, onboarding wizard reordered for the friend flow
+- Models sidebar tab removed entirely (enabled:()=>false; component + code kept). Local model card now only under General -> Show advanced sections.
+- CloudOnboarding reordered to match the sharing flow exactly: step 1 = "Clone the WhisperFly agent to your account" (opens the public agent URL, clone + connect Notion, paste the URL of YOUR copy - app resolves full URL or id), step 2 = paste your FlyMy.AI API key. Finish validates live, then the app runs under the friend's account.

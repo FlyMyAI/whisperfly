@@ -673,25 +673,25 @@
     "processing": "Processing..."
   },
   "cloudOnboarding": {
-    "subtitle": "Connect your FlyMy.AI account - two steps, one minute",
+    "subtitle": "WhisperFly runs on YOUR FlyMy.AI account. Two things to set up - about a minute.",
     "step1": {
-      "title": "1. Paste your FlyMy.AI API key",
-      "description": "Sign up (free) and copy your API key from your profile. It stays on this Mac.",
+      "title": "1. Clone the WhisperFly agent to your account",
+      "description": "Open the public agent, press Copy to clone it into your FlyMy.AI account, and connect Notion when it asks. This is where your voice notes will be filed.",
+      "button": "Open the WhisperFly agent",
+      "placeholder": "paste the URL of YOUR copy (or its id)"
+    },
+    "step2": {
+      "title": "2. Paste your FlyMy.AI API key",
+      "description": "Copy your API key from your FlyMy.AI profile. It is stored only on this Mac.",
       "button": "Open flymy.ai",
       "placeholder": "fly-..."
     },
-    "step2": {
-      "title": "2. Clone the WhisperFly agent",
-      "description": "Open the public agent, press Copy to clone it to YOUR account, then paste the id from your copy's page URL (or the agent uuid) here.",
-      "button": "Open the public agent",
-      "placeholder": "id from the URL of YOUR copy"
-    },
     "errors": {
       "badKey": "The key should start with fly-",
-      "noAgent": "Paste your cloned agent's id"
+      "noAgent": "Paste the URL (or id) of your cloned agent"
     },
     "skip": "Skip for now",
-    "finish": "Finish setup",
+    "finish": "Start using WhisperFly",
     "checking": "Checking..."
   }
 }

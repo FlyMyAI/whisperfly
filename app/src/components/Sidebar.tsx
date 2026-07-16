@@ -43,7 +43,10 @@ export const SECTIONS_CONFIG = {
     labelKey: "sidebar.models",
     icon: Cpu,
     component: ModelsSettings,
-    enabled: (settings) => settings?.advanced_ui ?? false,
+    // Cloud-first: the Models tab is removed from the UI entirely (component
+    // and code paths kept intact; local models are managed from General ->
+    // "Show advanced sections" via the model card).
+    enabled: () => false,
   },
   cloud: {
     labelKey: "sidebar.cloud",

@@ -27,7 +27,7 @@ Open-source app (fork of [Handy](https://github.com/cjpais/Handy), MIT) + one Fl
 
 ## Use the app directly
 
-Download `WhisperFly.dmg` from Releases, right-click -> Open (demo build is ad-hoc signed), pick a local model, grant mic + accessibility. Dictation works immediately, offline. For the Notion inbox: enable **FlyMy.AI Cloud** in settings, paste your [flymy.ai](https://app.flymy.ai) API key - our WhisperFly agent id is prefilled (create your own from [agent/prompt.md](agent/prompt.md) to change the Notion database or the routing).
+Download `WhisperFly.dmg` from Releases, right-click -> Open (demo build is ad-hoc signed), pick a local model, grant mic + accessibility. Dictation works immediately, offline. For the Notion inbox: open **FlyMy.AI Cloud** in settings, paste your [flymy.ai](https://app.flymy.ai) API key, then **clone the [public WhisperFly agent](https://app.flymy.ai/agents/chat/qte-mkye-seb) to your account** (agents run on YOUR account) and paste your copy's ID. Or create your own from [agent/prompt.md](agent/prompt.md).
 
 ## Numbers, receipts, dead ends
 

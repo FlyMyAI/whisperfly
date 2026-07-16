@@ -2,19 +2,37 @@
 
 **Push a hotkey, speak, done: text lands at your cursor instantly (local ASR), and a cloud agent quietly transcribes, cleans, tags and files every voice note into your Notion.**
 
-Built in one day with **Claude Code** as the brain and **[FlyMy.AI](https://flymy.ai)** as the cloud runtime - and this repo is the full recipe: code, agent prompt, and the honest build log with real billed costs. Clone it, feed it to Claude, adapt it to your own account.
+Built in one day with **Claude Code** as the brain and **[FlyMy.AI](https://flymy.ai)** as the AI cloud - and this repo is the full recipe. **The price difference, upfront:**
+
+| | Dictation subscription (Wispr Flow Pro) | WhisperFly (this repo) |
+|---|---|---|
+| Hotkey dictation | $12-15/mo forever | **$0** - local, offline |
+| Voice notes cleaned + tagged + filed to Notion | not a feature | **$0.083/note** (our real bill) |
+
+## Build this yourself - 3 steps
+
+**1. Connect the FlyMy.AI MCP to your coding agent** - one line:
+
+```bash
+# Claude Code
+claude mcp add --transport http flymyai https://mcp-agents.flymy.ai/mcp
+```
+claude.ai / Claude Desktop: Settings -> Connectors -> add `https://mcp-agents.flymy.ai/mcp`. Codex, Antigravity or any MCP client: point it at the same URL. Sign in with your [flymy.ai](https://app.flymy.ai) account when prompted.
+
+**2. Paste one prompt.** [`BUILD_PROMPT.md`](BUILD_PROMPT.md) has two ready-made ones: *reproduce this app on your account in ~5 min*, or *build your own from scratch* the way we did. In short:
+
+```text
+Clone github.com/FlyMyAI/whisperfly, read CLAUDE.md, and set it up on MY
+FlyMyAI account: Notion database, agent from agent/prompt.md, freeze it,
+build the app, tell me what to put in settings.
+```
+
+**3. Speak.** Text lands at your cursor instantly (local ASR); the cloud agent quietly files every note into your Notion.
 
 ```
-you speak (hotkey)
-      │
-      ▼
-WhisperFly.app (Handy fork, local)          FlyMy.AI cloud (async, fire-and-forget)
-├─ local ASR (Whisper/Parakeet) ──paste──▶  your cursor, instantly
-└─ saved WAV ───────upload────────────────▶ WhisperFly agent
-                                            ├─ cloud Whisper STT
-                                            ├─ LLM cleanup + keywords (spoken "tag ..."/"тег ..." too)
-                                            ├─ Notion row (Name/Date/Keywords/Source/Words + full text)
-                                            └─ ~$0.08 and ~40s per note (o4-mini, measured)
+   hotkey ──▶ WhisperFly.app ──paste──▶ your cursor          (local, $0, instant)
+                    │
+                    └──WAV──▶ FlyMy.AI agent ──▶ STT + cleanup + tags ──▶ Notion   ($0.083, async)
 ```
 
 ## Why this exists (vs a $15/mo dictation subscription)

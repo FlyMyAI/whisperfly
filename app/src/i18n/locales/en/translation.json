@@ -118,7 +118,9 @@
         "checkFailed": "Failed to check permissions. Please try again.",
         "requestFailed": "Failed to request permission. Please try again."
       }
-    }
+    },
+    "chooseDifferentModel": "Choose a different model",
+    "autoSubtitle": "Setting up local transcription - one moment"
   },
   "modelSelector": {
     "custom": "Custom",
@@ -582,15 +584,20 @@
         "placeholder": "fly-..."
       },
       "agentUuid": {
-        "title": "Agent ID",
-        "description": "Prefilled with the public WhisperFly agent. Paste your own agent uuid to change the Notion database or the routing.",
-        "placeholder": "agent task uuid"
+        "title": "Your agent ID",
+        "description": "The task uuid of YOUR cloned (or own) agent. The public one cannot run on your key.",
+        "placeholder": "paste your agent uuid"
       },
       "connect": {
         "title": "Account setup",
         "description": "Connect Notion to your FlyMy.AI account and grab your API key.",
         "notionButton": "Connect Notion",
         "keyButton": "Open FlyMy.AI"
+      },
+      "getAgent": {
+        "title": "WhisperFly agent",
+        "description": "Agents run on YOUR FlyMy.AI account: open the public WhisperFly agent, clone it to your account, then paste your copy's ID below.",
+        "button": "Open public agent"
       }
     },
     "interface": {

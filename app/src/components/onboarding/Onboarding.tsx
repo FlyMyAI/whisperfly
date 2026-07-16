@@ -27,7 +27,11 @@ const Onboarding: React.FC<OnboardingProps> = ({ onModelSelected }) => {
   } = useModelStore();
   const [selectedModelId, setSelectedModelId] = useState<string | null>(null);
   const [showAll, setShowAll] = useState(false);
+  // Launch-and-go: auto-pick the recommended model with no catalog screen.
+  // "Choose a different model" flips to the full manual picker.
+  const [autoMode, setAutoMode] = useState(true);
   const hasStartedSelection = useRef(false);
+  const hasAutoStarted = useRef(false);
 
   const isBusy = selectedModelId !== null;
 
@@ -52,6 +56,30 @@ const Onboarding: React.FC<OnboardingProps> = ({ onModelSelected }) => {
       rest,
     };
   }, [models]);
+
+  // Auto-start: prefer an already-downloaded model; otherwise download the
+  // featured multilingual pick (topPicks[1]), falling back to the top pick.
+  useEffect(() => {
+    if (!autoMode || hasAutoStarted.current || selectedModelId) return;
+    if (models.length === 0) return;
+    const existing = models.find((m: ModelInfo) => m.is_downloaded);
+    if (existing) {
+      hasAutoStarted.current = true;
+      setSelectedModelId(existing.id);
+      return;
+    }
+    const pick = topPicks[1] ?? topPicks[0] ?? downloadable[0];
+    if (pick) {
+      hasAutoStarted.current = true;
+      setSelectedModelId(pick.id);
+      downloadModel(pick.id).then((success) => {
+        if (!success) {
+          setSelectedModelId(null);
+          setAutoMode(false); // fall back to the manual picker
+        }
+      });
+    }
+  }, [autoMode, models, topPicks, downloadable, selectedModelId, downloadModel]);
 
   const hasRecommended = topPicks.length > 0 || otherRecommended.length > 0;
   // When nothing recommended remains to download (e.g. all already on disk),
@@ -148,10 +176,45 @@ const Onboarding: React.FC<OnboardingProps> = ({ onModelSelected }) => {
       <div className="flex flex-col items-center gap-2 shrink-0">
         <HandyTextLogo width={200} />
         <p className="text-text/70 max-w-md font-medium mx-auto">
-          {t("onboarding.subtitle")}
+          {autoMode ? t("onboarding.autoSubtitle") : t("onboarding.subtitle")}
         </p>
       </div>
 
+      {autoMode ? (
+        <div className="max-w-[600px] w-full mx-auto text-center flex-1 flex flex-col min-h-0">
+          <div className="space-y-6 pb-6">
+            {selectedModelId &&
+              models
+                .filter((m: ModelInfo) => m.id === selectedModelId)
+                .map((model: ModelInfo) => (
+                  <ModelCard
+                    key={model.id}
+                    model={model}
+                    variant="featured"
+                    status={
+                      model.is_downloaded
+                        ? "switching"
+                        : getModelStatus(model.id)
+                    }
+                    disabled={false}
+                    onSelect={() => {}}
+                    onDownload={() => {}}
+                    onCancel={handleCancelDownload}
+                    downloadProgress={getModelDownloadProgress(model.id)}
+                    downloadSpeed={getModelDownloadSpeed(model.id)}
+                    showRecommended={false}
+                  />
+                ))}
+            <button
+              type="button"
+              onClick={() => setAutoMode(false)}
+              className="flex items-center justify-center gap-1.5 mx-auto py-1 text-sm font-medium text-text/60 hover:text-text transition-colors"
+            >
+              {t("onboarding.chooseDifferentModel")}
+            </button>
+          </div>
+        </div>
+      ) : (
       <div className="max-w-[600px] w-full mx-auto text-center flex-1 flex flex-col min-h-0">
         <div className="space-y-6 pb-6">
           {models.some((m: ModelInfo) => m.is_downloaded) && (
@@ -253,6 +316,7 @@ const Onboarding: React.FC<OnboardingProps> = ({ onModelSelected }) => {
           )}
         </div>
       </div>
+      )}
     </div>
   );
 };

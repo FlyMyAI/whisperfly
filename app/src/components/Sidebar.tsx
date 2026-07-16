@@ -43,7 +43,7 @@ export const SECTIONS_CONFIG = {
     labelKey: "sidebar.models",
     icon: Cpu,
     component: ModelsSettings,
-    enabled: () => true,
+    enabled: (settings) => settings?.advanced_ui ?? false,
   },
   cloud: {
     labelKey: "sidebar.cloud",

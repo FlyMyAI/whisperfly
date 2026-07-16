@@ -10,9 +10,11 @@ import { useSettings } from "../../../hooks/useSettings";
 
 /**
  * FlyMy.AI Cloud: ship every finished voice note to a FlyMyAI agent
- * (cloud STT + cleanup + keywords + Notion filing). The agent uuid is
- * prefilled with the public WhisperFly agent; paste your own to repoint.
+ * (cloud STT + cleanup + keywords + Notion filing). Agents are per-account:
+ * users clone the public WhisperFly agent and paste their copy's uuid.
  */
+const PUBLIC_AGENT_URL = "https://app.flymy.ai/agents/chat/qte-mkye-seb";
+
 export const CloudSettings: React.FC = () => {
   const { t } = useTranslation();
   const { getSetting, updateSetting, isUpdating } = useSettings();
@@ -42,6 +44,20 @@ export const CloudSettings: React.FC = () => {
             disabled={false}
             placeholder={t("settings.cloud.apiKey.placeholder")}
           />
+        </SettingContainer>
+        <SettingContainer
+          title={t("settings.cloud.getAgent.title")}
+          description={t("settings.cloud.getAgent.description")}
+          layout="horizontal"
+          grouped={true}
+        >
+          <button
+            type="button"
+            className="px-3 py-1.5 text-sm rounded-md border border-mid-gray/40 hover:bg-mid-gray/10 transition-colors"
+            onClick={() => openUrl(PUBLIC_AGENT_URL)}
+          >
+            {t("settings.cloud.getAgent.button")}
+          </button>
         </SettingContainer>
         <SettingContainer
           title={t("settings.cloud.agentUuid.title")}

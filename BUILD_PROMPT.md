@@ -12,7 +12,7 @@ Set it up end-to-end on MY FlyMyAI account using the FlyMyAI MCP tools:
 1. Create a Notion database "Voice Notes" (properties: Name title, Date date,
    Keywords multi_select, Source select, Words number) under a page my FlyMyAI
    Notion integration can access, and remember its database id.
-2. Create the agent from agent/prompt.md with MY database id, model o4-mini,
+2. Create the agent from agent/prompt.md with MY database id, model gpt-4.1-mini,
    tools whisper + notion. Run it once on any short audio URL, verify a Notion
    row appears with keywords and the full transcript in the page body, then
    freeze it.

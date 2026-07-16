@@ -6,7 +6,7 @@ import HandyTextLogo from "../icons/HandyTextLogo";
 import { Input } from "../ui/Input";
 import { useSettings } from "../../hooks/useSettings";
 
-const PUBLIC_AGENT_URL = "https://app.flymy.ai/agents/chat/qte-mkye-seb";
+const PUBLIC_AGENT_URL = "https://app.flymy.ai/agents/chat/kff-gefa-yjr";
 const FLYMYAI_URL = "https://app.flymy.ai/";
 
 interface CloudOnboardingProps {

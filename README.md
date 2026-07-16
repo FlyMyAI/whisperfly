@@ -3,7 +3,7 @@
 **We killed Wispr Flow.** Built this app from **one prompt** - Claude as the builder, **FlyMy.AI cloud** as the backend.
 
 - **Safe**: no telemetry, no third-party APIs in the app - it talks ONLY to your FlyMy.AI account; the agent holds the Notion credentials server-side. Optional fully-local offline mode (pick a model in advanced settings).
-- **Cheap**: no subscription. **$0.083 per note** on our real bill (transcription + cleanup + tags + Notion filing included) - a heavy month is ~$4-8 vs their $144-180/yr, and nothing to install-time-download.
+- **Cheap**: no subscription. **$0.031 per note** on our real bill (transcription + cleanup + tags + Notion filing included) - a heavy month is ~$3-6 vs their $144-180/yr, and nothing to install-time-download.
 
 ## How we did it
 
@@ -28,11 +28,11 @@ Open-source app shell (fork of [Handy](https://github.com/cjpais/Handy), MIT) + 
 
 ## Use the app directly
 
-Download `WhisperFly.dmg` from Releases, right-click -> Open (demo build is ad-hoc signed), pick a local model, grant mic + accessibility. Dictation works immediately, offline. For the Notion inbox: open **FlyMy.AI Cloud** in settings, paste your [flymy.ai](https://app.flymy.ai) API key, then **clone the [public WhisperFly agent](https://app.flymy.ai/agents/chat/qte-mkye-seb) to your account** (agents run on YOUR account) and paste your copy's ID. Or create your own from [agent/prompt.md](agent/prompt.md).
+Download `WhisperFly.dmg` from Releases, right-click -> Open (demo build is ad-hoc signed), pick a local model, grant mic + accessibility. Dictation works immediately, offline. For the Notion inbox: open **FlyMy.AI Cloud** in settings, paste your [flymy.ai](https://app.flymy.ai) API key, then **clone the [public WhisperFly agent](https://app.flymy.ai/agents/chat/kff-gefa-yjr) to your account** (agents run on YOUR account) and paste your copy's ID. Or create your own from [agent/prompt.md](agent/prompt.md).
 
 ## Share it with a friend
 
-Send them the dmg. First launch walks them through everything: grant permissions -> paste THEIR free [flymy.ai](https://app.flymy.ai) API key -> clone the [public WhisperFly agent](https://app.flymy.ai/agents/chat/qte-mkye-seb) to THEIR account (one Copy click; the app accepts the id straight from the URL of their copy) -> speak. Their notes go to their Notion, billed to their account at ~$0.03/note. The app ships with zero baked-in credentials.
+Send them the dmg. First launch walks them through everything: grant permissions -> paste THEIR free [flymy.ai](https://app.flymy.ai) API key -> clone the [public WhisperFly agent](https://app.flymy.ai/agents/chat/kff-gefa-yjr) to THEIR account (one Copy click; the app accepts the id straight from the URL of their copy) -> speak. Their notes go to their Notion, billed to their account at ~$0.03/note. The app ships with zero baked-in credentials.
 
 ## Numbers, receipts, dead ends
 

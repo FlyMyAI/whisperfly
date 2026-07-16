@@ -14,7 +14,7 @@ import { commands } from "@/bindings";
  * (cloud STT + cleanup + keywords + Notion filing). Agents are per-account:
  * users clone the public WhisperFly agent and paste their copy's uuid.
  */
-const PUBLIC_AGENT_URL = "https://app.flymy.ai/agents/chat/qte-mkye-seb";
+const PUBLIC_AGENT_URL = "https://app.flymy.ai/agents/chat/kff-gefa-yjr";
 
 export const CloudSettings: React.FC = () => {
   const { t } = useTranslation();

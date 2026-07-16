@@ -15,7 +15,8 @@
     "postProcessing": "Post Process",
     "history": "History",
     "debug": "Debug",
-    "about": "About"
+    "about": "About",
+    "cloud": "FlyMy.AI Cloud"
   },
   "onboarding": {
     "subtitle": "To get started, choose a transcription model",
@@ -567,6 +568,36 @@
           "description": "High-performance tensor library for on-device machine learning inference",
           "details": "Handy's local speech-to-text is built on transcribe.cpp and ggml. Thanks to the amazing work by Georgi Gerganov and contributors."
         }
+      }
+    },
+    "cloud": {
+      "title": "FlyMy.AI Cloud",
+      "enabled": {
+        "label": "File voice notes to Notion",
+        "description": "After each dictation, send the recording to your FlyMy.AI agent: cloud transcription, cleanup, keywords, and a Notion row. Runs in the background - pasting stays instant and local."
+      },
+      "apiKey": {
+        "title": "FlyMy.AI API key",
+        "description": "From your account at app.flymy.ai",
+        "placeholder": "fly-..."
+      },
+      "agentUuid": {
+        "title": "Agent ID",
+        "description": "Prefilled with the public WhisperFly agent. Paste your own agent uuid to change the Notion database or the routing.",
+        "placeholder": "agent task uuid"
+      },
+      "connect": {
+        "title": "Account setup",
+        "description": "Connect Notion to your FlyMy.AI account and grab your API key.",
+        "notionButton": "Connect Notion",
+        "keyButton": "Open FlyMy.AI"
+      }
+    },
+    "interface": {
+      "title": "Interface",
+      "advancedUi": {
+        "label": "Show advanced sections",
+        "description": "Unhide the Advanced and History sections in the sidebar."
       }
     }
   },

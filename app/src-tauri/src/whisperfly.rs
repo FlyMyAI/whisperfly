@@ -28,7 +28,10 @@ fn backend_base() -> String {
 /// WHISPERFLY_AGENT_UUID) so a dev build works without touching the UI.
 fn cloud_config(app: &AppHandle) -> Option<(String, String)> {
     let settings = get_settings(app);
-    if !settings.whisperfly_cloud_enabled {
+    // Env override so a terminal launch can exercise cloud mode before the
+    // settings UI existed / without touching the store: WHISPERFLY_CLOUD=1.
+    let env_enabled = std::env::var("WHISPERFLY_CLOUD").map(|v| v == "1").unwrap_or(false);
+    if !settings.whisperfly_cloud_enabled && !env_enabled {
         return None;
     }
     let key = Some(settings.flymyai_api_key.trim().to_string())

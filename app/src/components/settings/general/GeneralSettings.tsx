@@ -11,10 +11,12 @@ import { useSettings } from "../../../hooks/useSettings";
 import { VolumeSlider } from "../VolumeSlider";
 import { MuteWhileRecording } from "../MuteWhileRecording";
 import { ModelSettingsCard } from "./ModelSettingsCard";
+import { ToggleSwitch } from "../../ui/ToggleSwitch";
 
 export const GeneralSettings: React.FC = () => {
   const { t } = useTranslation();
-  const { audioFeedbackEnabled, getSetting } = useSettings();
+  const { audioFeedbackEnabled, getSetting, updateSetting, isUpdating } =
+    useSettings();
   const pushToTalk = getSetting("push_to_talk");
   const isLinux = type() === "linux";
   return (
@@ -38,6 +40,16 @@ export const GeneralSettings: React.FC = () => {
           disabled={!audioFeedbackEnabled}
         />
         <VolumeSlider disabled={!audioFeedbackEnabled} />
+      </SettingsGroup>
+      <SettingsGroup title={t("settings.interface.title")}>
+        <ToggleSwitch
+          checked={getSetting("advanced_ui") || false}
+          onChange={(value) => updateSetting("advanced_ui", value)}
+          isUpdating={isUpdating("advanced_ui")}
+          label={t("settings.interface.advancedUi.label")}
+          description={t("settings.interface.advancedUi.description")}
+          grouped={true}
+        />
       </SettingsGroup>
     </div>
   );

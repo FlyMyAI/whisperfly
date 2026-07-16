@@ -1,6 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Cog, FlaskConical, History, Info, Sparkles, Cpu } from "lucide-react";
+import { Cloud, Cog, FlaskConical, History, Info, Sparkles, Cpu } from "lucide-react";
 import HandyTextLogo from "./icons/HandyTextLogo";
 import HandyHand from "./icons/HandyHand";
 import { useSettings } from "../hooks/useSettings";
@@ -12,6 +12,7 @@ import {
   AboutSettings,
   PostProcessingSettings,
   ModelsSettings,
+  CloudSettings,
 } from "./settings";
 
 export type SidebarSection = keyof typeof SECTIONS_CONFIG;
@@ -44,17 +45,23 @@ export const SECTIONS_CONFIG = {
     component: ModelsSettings,
     enabled: () => true,
   },
+  cloud: {
+    labelKey: "sidebar.cloud",
+    icon: Cloud,
+    component: CloudSettings,
+    enabled: () => true,
+  },
   advanced: {
     labelKey: "sidebar.advanced",
     icon: Cog,
     component: AdvancedSettings,
-    enabled: () => true,
+    enabled: (settings) => settings?.advanced_ui ?? false,
   },
   history: {
     labelKey: "sidebar.history",
     icon: History,
     component: HistorySettings,
-    enabled: () => true,
+    enabled: (settings) => settings?.advanced_ui ?? false,
   },
   postprocessing: {
     labelKey: "sidebar.postProcessing",

@@ -473,8 +473,18 @@ pub struct AppSettings {
     #[serde(default)]
     pub flymyai_api_key: String,
     /// FlyMyAI agent task uuid to run (env WHISPERFLY_AGENT_UUID fallback).
-    #[serde(default)]
+    /// Defaults to the public WhisperFly agent so cloud mode works out of the
+    /// box once an API key is set; users paste their own uuid to repoint.
+    #[serde(default = "default_flymyai_agent_uuid")]
     pub flymyai_agent_uuid: String,
+    /// Show advanced sidebar sections (Advanced, History). UI-only gate; all
+    /// features keep working, they are just hidden for the launch-and-go UX.
+    #[serde(default)]
+    pub advanced_ui: bool,
+}
+
+fn default_flymyai_agent_uuid() -> String {
+    "057ad1c9-8528-40f4-9b74-bfa50c112b76".to_string()
 }
 
 fn default_model() -> String {
@@ -907,7 +917,8 @@ pub fn get_default_settings() -> AppSettings {
         overlay_style: default_overlay_style(),
         whisperfly_cloud_enabled: false,
         flymyai_api_key: String::new(),
-        flymyai_agent_uuid: String::new(),
+        flymyai_agent_uuid: default_flymyai_agent_uuid(),
+        advanced_ui: false,
     }
 }
 

@@ -80,6 +80,14 @@ const settingUpdaters: {
     commands.updateMicrophoneMode(value as boolean),
   audio_feedback: (value) =>
     commands.changeAudioFeedbackSetting(value as boolean),
+  whisperfly_cloud_enabled: (value) =>
+    commands.changeWhisperflyCloudEnabledSetting(value as boolean),
+  flymyai_api_key: (value) =>
+    commands.changeFlymyaiApiKeySetting(value as string),
+  flymyai_agent_uuid: (value) =>
+    commands.changeFlymyaiAgentUuidSetting(value as string),
+  advanced_ui: (value) =>
+    commands.changeAdvancedUiSetting(value as boolean),
   audio_feedback_volume: (value) =>
     commands.changeAudioFeedbackVolumeSetting(value as number),
   sound_theme: (value) => commands.changeSoundThemeSetting(value as string),

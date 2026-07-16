@@ -17,6 +17,25 @@ WhisperFly.app (Handy fork, local)          FlyMy.AI cloud (async, fire-and-forg
                                             └─ ~$0.08 and ~40s per note (o4-mini, measured)
 ```
 
+## Why this exists (vs a $15/mo dictation subscription)
+
+The thing dictation subscriptions charge $144-180/year for - hotkey speech-to-text at your cursor - is **local, offline and $0** here. You own the stack: your keys, your data path, your routing rules.
+
+**Cost** (our real billed numbers, not provider list prices - see BUILD_LOG for receipts):
+
+| | WhisperFly | Wispr Flow Pro |
+|---|---|---|
+| Hotkey dictation, unlimited | **$0** (on-device Whisper/Parakeet) | $12-15/mo, cloud-only |
+| Voice note -> cleaned + tagged + filed to Notion | **$0.083/note** (measured, FlyMyAI billing) | not a feature |
+| Works offline | yes (dictation) | no |
+| Free tier ceiling | none | 2,000 words/week (~285 words/day) |
+
+**Footprint**: native Tauri/Rust app - tens of MB of RAM. Wispr Flow's desktop client is Electron; users measured ~800 MB RAM and ~8% CPU at idle on Windows.
+
+**Privacy** (literally true, no marketing stretch): no account, no telemetry. Dictation runs fully on-device - audio never leaves your machine unless you enable cloud mode. Recordings/history live only on your disk, under your control. Cloud mode is opt-in and runs on YOUR FlyMyAI account with YOUR keys; notes land in YOUR Notion. (The cloud-only incumbent had a documented 2025 controversy around screenshot capture; with a local-first, your-keys stack that class of problem is structurally absent.)
+
+**Quality, honestly**: on clean English the top STT engines are within 1-2 points of each other - we do not claim "more accurate" without a side-by-side. What you DO get: a **custom dictionary** for your jargon/brand names (the most-complained-about weakness of the incumbents) - via initial-prompt biasing locally and the whisper `prompt` keyterm biasing in the cloud agent - plus a cleanup prompt you can edit, model choice per task, and routing rules (Notion today; Slack/Obsidian/tasks = edit one prompt).
+
 ## What's in the box
 
 | Path | What it is |

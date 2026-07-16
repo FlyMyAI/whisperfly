@@ -85,3 +85,14 @@ vs Wispr $12/mo: break-even ~145 notes/mo (~5/day); at 10 notes/day **$25/mo** â
 - Denis picked **WhisperFly** (over FlySay which scanned cleanest). Risk accepted and documented: phonetic proximity to Wispr Flow ("Wispr" = stylized "whisper"), crowded whisper-* namespace (superwhisper, MacWhisper, OpenWhispr), OpenAI model-name branding guidelines. Product name only; can be re-skinned in minutes if it ever bites.
 - Vanilla Handy build: first attempt failed (repo requires **bun** for beforeBuildCommand); installed bun 1.3.14, rebuild running.
 - Integration design locked: hook right after Handy's WAV save (`actions.rs`), detached async task -> upload WAV -> run-loop compilation 242 -> Notion; local paste stays instant, cloud filing is fire-and-forget. New `src-tauri/src/whisperfly.rs`, settings fields `whisperfly_enabled` + `flymyai_api_key` (env fallback), reqwest needs `multipart` feature.
+
+## 2026-07-15/16 â€” .dmg built; GTM cost-model verified against real billing
+
+- **WhisperFly.app + WhisperFly_0.9.3_aarch64.dmg built** (40MB app, ad-hoc signed; tauri bundler's xattr step fails in this environment - finished manually with codesign + hdiutil). Repos pushed: FlyMyAI/whisperfly + FlyMyAI/built-with-flymyai (hub + submodule).
+- **Verified the internal GTM cost model (kill_demo_01_wisprflow) against measured billing.** The provider-price math ($0.27-0.32/audio-hour all-in, 36x/4x cheaper scenarios) is internally consistent BUT is a theoretical floor, not our bill:
+  - whisper tool bills by execution duration: ~$4-6/audio-hour observed = 11-16x provider list ($0.36/hr);
+  - agent-loop LLM overhead: ~$0.04/note vs ~$0.0005 assumed = ~80x;
+  - elevenlabs (Scribe) tool observed $0.03-1.71/call, not $0.22/hr list.
+  - Conclusion applied to marketing: lead with "dictation is local and $0" + measured "$0.083/note" for cloud filing; provider-floor numbers only as clearly-labeled theory. Closing the floor-vs-bill gap = the platform-primitives work (direct STT endpoint, light LLM endpoint).
+- Custom dictionary (the GTM differentiator) confirmed implementable TODAY on both paths: whisper tool has a `prompt` keyterm param; local Handy has custom words via initial_prompt.
+- Marketing/quality/privacy claim rules codified in the hub's **PLAYBOOK.md** (only own-bill numbers, no unverifiable accuracy claims, literally-true privacy wording, name-check before naming).

@@ -30,6 +30,10 @@ Open-source app shell (fork of [Handy](https://github.com/cjpais/Handy), MIT) + 
 
 Download `WhisperFly.dmg` from Releases, right-click -> Open (demo build is ad-hoc signed), pick a local model, grant mic + accessibility. Dictation works immediately, offline. For the Notion inbox: open **FlyMy.AI Cloud** in settings, paste your [flymy.ai](https://app.flymy.ai) API key, then **clone the [public WhisperFly agent](https://app.flymy.ai/agents/chat/qte-mkye-seb) to your account** (agents run on YOUR account) and paste your copy's ID. Or create your own from [agent/prompt.md](agent/prompt.md).
 
+## Share it with a friend
+
+Send them the dmg. First launch walks them through everything: grant permissions -> paste THEIR free [flymy.ai](https://app.flymy.ai) API key -> clone the [public WhisperFly agent](https://app.flymy.ai/agents/chat/qte-mkye-seb) to THEIR account (one Copy click; the app accepts the id straight from the URL of their copy) -> speak. Their notes go to their Notion, billed to their account at ~$0.08/note. The app ships with zero baked-in credentials.
+
 ## Numbers, receipts, dead ends
 
 | | Wispr Flow Pro | WhisperFly |

@@ -110,3 +110,9 @@ vs Wispr $12/mo: break-even ~145 notes/mo (~5/day); at 10 notes/day **$25/mo** �
 - Agent made PUBLIC: https://app.flymy.ai/agents/chat/qte-mkye-seb (anon-verified 200). Cloud tab: "Open public agent" + clone-flow copy (agents are per-account - prefilling the author's uuid would 403; found via Denis's upgraded settings store where the prefill silently stayed empty).
 - Full visible rebrand: WhisperFly wordmark (bolt + text) replaces the Handy logo, tray tooltip, all locale strings; upstream credit moved to About + NOTICE. Lightning tray icons (theme-aware, red dot recording, outline transcribing). App icon generated with our own nano-banana-pro ($0.134).
 - Rules codified in hub PLAYBOOK 3c (cloud-first) + 3d (full rebrand).
+
+## 2026-07-16 — v0.4: first live user dictation + guided first-run wizard
+
+- **01:25 — FIRST LIVE E2E FROM VOICE**: Denis dictated via hotkey; run `due-qzau-owk` (source=whisperfly): text pasted from the cloud agent, Notion row + keywords created, **$0.062 billed**. Three real-user issues found and fixed on the way: wrong clipboard content in the key field, chat-link id pasted as agent id (404), Bluetooth AirPods as default mic capturing 0 samples.
+- v0.4: **CloudOnboarding wizard** on first launch (get key -> clone public agent -> paste id from URL; live-API validation; Skip available). New Rust command `resolve_flymyai_agent`: accepts agent uuid, chat-link id, or full URL and resolves via the API - in the wizard AND the settings tab. Zero baked credentials in the bundle.
+- Rules -> hub PLAYBOOK 3e (guided first-run, zero baked credentials, auto-resolve pasted ids).

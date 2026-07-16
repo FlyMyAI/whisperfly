@@ -116,3 +116,22 @@ vs Wispr $12/mo: break-even ~145 notes/mo (~5/day); at 10 notes/day **$25/mo** �
 - **01:25 — FIRST LIVE E2E FROM VOICE**: Denis dictated via hotkey; run `due-qzau-owk` (source=whisperfly): text pasted from the cloud agent, Notion row + keywords created, **$0.062 billed**. Three real-user issues found and fixed on the way: wrong clipboard content in the key field, chat-link id pasted as agent id (404), Bluetooth AirPods as default mic capturing 0 samples.
 - v0.4: **CloudOnboarding wizard** on first launch (get key -> clone public agent -> paste id from URL; live-API validation; Skip available). New Rust command `resolve_flymyai_agent`: accepts agent uuid, chat-link id, or full URL and resolves via the API - in the wizard AND the settings tab. Zero baked credentials in the bundle.
 - Rules -> hub PLAYBOOK 3e (guided first-run, zero baked credentials, auto-resolve pasted ids).
+
+## 2026-07-16 — model battery: nano vs mini, latency work (steps 1-3)
+
+Backend MR 590 shipped (prod v3.4394): gpt-4.1-mini/nano in the agent model list + `text` param on notion_create_database_page (page+body in ONE call, -1 LLM turn). MR 591: mypy + model-list test fixed properly. App: fast early polling (0.8s).
+
+**6-case recognition battery** (RU tags / self-corrections / EN jargon / RU-EN code-switch / numbers-dates / long structured list):
+- **gpt-4.1-nano: REJECTED.** Blazing (7-11s/run) but undisciplined: malformed nested `properties` JSON (Notion 400s) until given a literal template; then 4/6 runs returned empty results, one run INVENTED a transcript, JSON-in-JSON in another. Cheap is worthless if wrong.
+- **gpt-4.1-mini: SHIPPED.** 6/6 clean with the template prompt. Numbers/dates/percent conversions flawless ("двадцать пять тысяч долларов" -> "25 000 долларов"). Prompt v6 also fixed: spoken self-corrections now resolved (example-driven rule), notion_url copied from the response's page.url (models mangle retyped ids - the mini variant of the URL-retype disease).
+- Known residual: ~1-in-8 runs mini introduces small typos when re-emitting a long transcript between turns. Documented, acceptable for v1; escalate to claude-sonnet-4-6 (rates row now exists) if quality complaints.
+
+**Frozen compilation 244** (v6, gpt-4.1-mini): verified run = **$0.0307/note, 29s, 0 exceptions**.
+
+| Metric | v1 (gpt-5.5) | v3 (o4-mini) | v6 (gpt-4.1-mini) |
+|---|---|---|---|
+| $/note | $0.256 | $0.083 | **$0.031** |
+| Latency | ~60s | ~42s | **~29s** |
+| LLM turns / tool calls | 6 / 5 | 5 / 4 | 4 / 3 |
+
+8x cheaper and 2x faster than the first working version. Remaining latency = whisper tool (~5-10s) + celery pickup + 4 mini turns; the next big step is script-mode frozen execution (platform work, deferred).

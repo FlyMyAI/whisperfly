@@ -11,7 +11,7 @@
    hotkey ──▶ WhisperFly.app ──WAV──▶ FlyMy.AI agent ──▶ cloud STT + cleanup + tags
                     ▲                        │                      │
                     └──── cleaned text ◀─────┘                      └──▶ your Notion
-              pasted at your cursor              ($0.083/note, the agent does everything)
+              pasted at your cursor              ($0.031/note, the agent does everything)
 ```
 
 Open-source app shell (fork of [Handy](https://github.com/cjpais/Handy), MIT) + one FlyMy.AI agent, frozen into a fixed pipeline. The agent IS the engine - the app just records and pastes.
@@ -32,13 +32,13 @@ Download `WhisperFly.dmg` from Releases, right-click -> Open (demo build is ad-h
 
 ## Share it with a friend
 
-Send them the dmg. First launch walks them through everything: grant permissions -> paste THEIR free [flymy.ai](https://app.flymy.ai) API key -> clone the [public WhisperFly agent](https://app.flymy.ai/agents/chat/qte-mkye-seb) to THEIR account (one Copy click; the app accepts the id straight from the URL of their copy) -> speak. Their notes go to their Notion, billed to their account at ~$0.08/note. The app ships with zero baked-in credentials.
+Send them the dmg. First launch walks them through everything: grant permissions -> paste THEIR free [flymy.ai](https://app.flymy.ai) API key -> clone the [public WhisperFly agent](https://app.flymy.ai/agents/chat/qte-mkye-seb) to THEIR account (one Copy click; the app accepts the id straight from the URL of their copy) -> speak. Their notes go to their Notion, billed to their account at ~$0.03/note. The app ships with zero baked-in credentials.
 
 ## Numbers, receipts, dead ends
 
 | | Wispr Flow Pro | WhisperFly |
 |---|---|---|
-| Price | $12-15/mo forever | **$0.083/note, pay-per-use** (or $0 in local offline mode) |
+| Price | $12-15/mo forever | **$0.031/note, pay-per-use** (or $0 in local offline mode) |
 | Note -> cleaned + tagged -> Notion | not a feature | **included in the same run** |
 | Offline mode | no | yes (advanced: pick a local model) |
 | Idle footprint | ~800 MB RAM (Electron, user-measured) | tens of MB (native Tauri/Rust) |

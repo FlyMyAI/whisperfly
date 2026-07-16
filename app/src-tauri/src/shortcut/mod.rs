@@ -528,6 +528,15 @@ pub fn change_advanced_ui_setting(app: AppHandle, enabled: bool) -> Result<(), S
 
 #[tauri::command]
 #[specta::specta]
+pub fn change_onboarding_completed_setting(app: AppHandle, completed: bool) -> Result<(), String> {
+    let mut settings = settings::get_settings(&app);
+    settings.onboarding_completed = completed;
+    settings::write_settings(&app, settings);
+    Ok(())
+}
+
+#[tauri::command]
+#[specta::specta]
 pub fn change_audio_feedback_volume_setting(app: AppHandle, volume: f32) -> Result<(), String> {
     let mut settings = settings::get_settings(&app);
     settings.audio_feedback_volume = volume;

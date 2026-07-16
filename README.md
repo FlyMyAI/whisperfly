@@ -2,18 +2,19 @@
 
 **We killed Wispr Flow.** Built this app from **one prompt** - Claude as the builder, **FlyMy.AI cloud** as the backend.
 
-- **Safe**: local-first. Your voice never leaves your Mac unless YOU flip cloud mode on. No account, no telemetry.
-- **Cheap**: dictation costs **$0 forever** (they charge $12-15/mo for it). Cloud notes to Notion: **$0.083 each** on our real bill - a heavy month is ~$4 vs their $180/yr. **3-18x cheaper, and the core feature is free.**
+- **Safe**: no telemetry, no third-party APIs in the app - it talks ONLY to your FlyMy.AI account; the agent holds the Notion credentials server-side. Optional fully-local offline mode (pick a model in advanced settings).
+- **Cheap**: no subscription. **$0.083 per note** on our real bill (transcription + cleanup + tags + Notion filing included) - a heavy month is ~$4-8 vs their $144-180/yr, and nothing to install-time-download.
 
 ## How we did it
 
 ```
-   hotkey ──▶ WhisperFly.app ──paste──▶ your cursor                (local, $0, instant)
-                    │
-                    └──▶ FlyMy.AI cloud agent ──▶ STT + cleanup + tags ──▶ your Notion   ($0.083, async)
+   hotkey ──▶ WhisperFly.app ──WAV──▶ FlyMy.AI agent ──▶ cloud STT + cleanup + tags
+                    ▲                        │                      │
+                    └──── cleaned text ◀─────┘                      └──▶ your Notion
+              pasted at your cursor              ($0.083/note, the agent does everything)
 ```
 
-Open-source app (fork of [Handy](https://github.com/cjpais/Handy), MIT) + one FlyMy.AI agent, frozen into a fixed pipeline. That's the whole product.
+Open-source app shell (fork of [Handy](https://github.com/cjpais/Handy), MIT) + one FlyMy.AI agent, frozen into a fixed pipeline. The agent IS the engine - the app just records and pastes.
 
 ## Build it yourself
 
@@ -33,9 +34,9 @@ Download `WhisperFly.dmg` from Releases, right-click -> Open (demo build is ad-h
 
 | | Wispr Flow Pro | WhisperFly |
 |---|---|---|
-| Hotkey dictation | $12-15/mo, cloud-only | **$0, on-device, offline** |
-| Note -> cleaned + tagged -> Notion | not a feature | **$0.083/note** (measured) |
-| Free tier | 2,000 words/week | unlimited |
+| Price | $12-15/mo forever | **$0.083/note, pay-per-use** (or $0 in local offline mode) |
+| Note -> cleaned + tagged -> Notion | not a feature | **included in the same run** |
+| Offline mode | no | yes (advanced: pick a local model) |
 | Idle footprint | ~800 MB RAM (Electron, user-measured) | tens of MB (native Tauri/Rust) |
 
 Quality, honestly: top STT engines sit within 1-2 points of each other - we don't claim "more accurate". We claim a **custom dictionary** for your jargon (their #1 complaint), an editable cleanup prompt, and routing rules you own.

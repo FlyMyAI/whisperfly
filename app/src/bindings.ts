@@ -69,6 +69,14 @@ async changeAdvancedUiSetting(enabled: boolean) : Promise<Result<null, string>> 
     else return { status: "error", error: e  as any };
 }
 },
+async changeOnboardingCompletedSetting(completed: boolean) : Promise<Result<null, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("change_onboarding_completed_setting", { completed }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
 async changeAudioFeedbackVolumeSetting(volume: number) : Promise<Result<null, string>> {
     try {
     return { status: "ok", data: await TAURI_INVOKE("change_audio_feedback_volume_setting", { volume }) };

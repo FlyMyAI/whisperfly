@@ -688,20 +688,29 @@ impl ShortcutAction for TranscribeAction {
                         crate::audio_toolkit::save_wav_file(&wav_path, &samples_for_wav)
                     });
 
+                    // Cloud-first: with no local model selected and FlyMy.AI
+                    // configured, the cloud agent transcribes (and files Notion).
+                    let cloud_only = crate::whisperfly::cloud_only_mode(&ah);
+
                     // Transcribe concurrently with WAV save. If a live stream was
                     // running, finalize it and use its text (all audio was already
                     // fed to the stream); otherwise batch-transcribe the samples.
                     let transcription_time = Instant::now();
-                    let transcription_result = match tm.finalize_stream() {
-                        // A finalized stream with usable text wins. An empty result
-                        // (no active stream, produced nothing, or a finalize error
-                        // after the engine was returned) falls back to a full batch
-                        // transcription of the same audio. A finalize timeout is
-                        // surfaced instead — the worker may still hold the engine,
-                        // so a batch fallback would contend with it.
-                        Ok(Some(text)) if !text.trim().is_empty() => Ok(text),
-                        Ok(_) => tm.transcribe(samples),
-                        Err(err) => Err(err),
+                    let local_transcription_result = if cloud_only {
+                        tm.cancel_stream(); // no local engine in cloud-only mode
+                        None
+                    } else {
+                        Some(match tm.finalize_stream() {
+                            // A finalized stream with usable text wins. An empty result
+                            // (no active stream, produced nothing, or a finalize error
+                            // after the engine was returned) falls back to a full batch
+                            // transcription of the same audio. A finalize timeout is
+                            // surfaced instead — the worker may still hold the engine,
+                            // so a batch fallback would contend with it.
+                            Ok(Some(text)) if !text.trim().is_empty() => Ok(text),
+                            Ok(_) => tm.transcribe(samples),
+                            Err(err) => Err(err),
+                        })
                     };
 
                     // Await WAV save and verify
@@ -734,6 +743,26 @@ impl ShortcutAction for TranscribeAction {
                         change_tray_icon(&ah, TrayIconState::Idle);
                         return;
                     }
+
+                    let transcription_result = match local_transcription_result {
+                        Some(result) => result,
+                        None => {
+                            // Cloud-only: needs the saved WAV; the agent returns the
+                            // cleaned text and files the note to Notion itself.
+                            if wav_saved {
+                                crate::whisperfly::transcribe_via_cloud(
+                                    &ah,
+                                    wav_path_for_verify.clone(),
+                                )
+                                .await
+                                .map_err(|e| anyhow::anyhow!("FlyMy.AI cloud: {e}"))
+                            } else {
+                                Err(anyhow::anyhow!(
+                                    "recording was not saved; cloud transcription needs the WAV"
+                                ))
+                            }
+                        }
+                    };
 
                     match transcription_result {
                         Ok(transcription) => {
@@ -769,10 +798,10 @@ impl ShortcutAction for TranscribeAction {
                                 return;
                             }
 
-                            // WhisperFly cloud mode: fire-and-forget filing of the
-                            // saved WAV to the FlyMyAI agent (Notion inbox). Never
-                            // blocks or fails the local paste path.
-                            if wav_saved {
+                            // Hybrid mode only (local model selected): fire-and-forget
+                            // filing of the saved WAV to the FlyMyAI agent. In cloud-only
+                            // mode the agent already ran as the transcription step.
+                            if wav_saved && !cloud_only {
                                 crate::whisperfly::spawn_file_voice_note(
                                     &ah,
                                     wav_path_for_verify.clone(),

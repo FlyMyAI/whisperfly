@@ -239,9 +239,15 @@ function App() {
   };
 
   const handleAccessibilityComplete = () => {
-    // Returning users already have models, skip to main app
-    // New users need to select a model
-    setOnboardingStep(isReturningUser ? "done" : "model");
+    // Cloud-first: no model selection at install - the FlyMy.AI agent
+    // transcribes in the cloud. Local models live in Settings (advanced).
+    if (!isReturningUser) {
+      commands.changeOnboardingCompletedSetting(true).catch((e) => {
+        console.warn("Failed to persist onboarding completion:", e);
+      });
+      setCurrentSection("cloud");
+    }
+    setOnboardingStep("done");
   };
 
   const handleModelSelected = () => {

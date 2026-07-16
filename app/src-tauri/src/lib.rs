@@ -542,6 +542,7 @@ pub fn run(cli_args: CliArgs) {
             shortcut::change_flymyai_api_key_setting,
             shortcut::change_flymyai_agent_uuid_setting,
             shortcut::change_advanced_ui_setting,
+            shortcut::change_onboarding_completed_setting,
             shortcut::change_audio_feedback_volume_setting,
             shortcut::change_sound_theme_setting,
             shortcut::change_theme_setting,

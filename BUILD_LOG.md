@@ -102,3 +102,11 @@ vs Wispr $12/mo: break-even ~145 notes/mo (~5/day); at 10 notes/day **$25/mo** �
 - **00:1x-00:2x** — App v0.2: new sidebar section **FlyMy.AI Cloud** (enable toggle, masked API key, agent id prefilled with the public WhisperFly agent, Connect Notion / Open FlyMy.AI buttons). Interface trimmed for launch-and-go: Advanced + History hidden behind a "Show advanced sections" toggle in General (UI-only gate, zero code removed). Env overrides for terminal testing: WHISPERFLY_CLOUD=1, FLYMYAI_API_KEY, WHISPERFLY_AGENT_UUID. Rust: 4 new settings commands; bindings.ts patched in generator style (runtime regeneration will produce the same).
 - **00:20** — Self-test per the new PLAYBOOK bar: frozen compilation 242 run `hlk-sbzw-dww` - CLEAN (4 tool calls, 0 retries, ~47s, **$0.096**), Notion row verified INCLUDING page body. Cost range over 3 frozen runs: $0.08-0.10 (whisper duration-billing variance).
 - **00:23** — Final **WhisperFly_0.9.3_aarch64.dmg** (40MB app, ad-hoc signed, dmg mount-verified; binary smoke: cloud settings symbols + UI strings present in bundle). Hub renamed to **build-with-flymyai**; AGENTS.md + build-flymyai-app skill added there.
+
+## 2026-07-16 — v0.3: cloud-first, full rebrand, zero-download install
+
+- Product decision (Denis): NO local model at install. Default mode = the FlyMy.AI agent does transcription AND Notion filing; the app records and pastes the agent's cleaned text (~40-60s to paste today). Local models remain an advanced opt-in (pick one -> instant local paste + async cloud filing).
+- Onboarding = permissions only; new users land straight on the FlyMy.AI Cloud tab. onboarding_completed set without any download.
+- Agent made PUBLIC: https://app.flymy.ai/agents/chat/qte-mkye-seb (anon-verified 200). Cloud tab: "Open public agent" + clone-flow copy (agents are per-account - prefilling the author's uuid would 403; found via Denis's upgraded settings store where the prefill silently stayed empty).
+- Full visible rebrand: WhisperFly wordmark (bolt + text) replaces the Handy logo, tray tooltip, all locale strings; upstream credit moved to About + NOTICE. Lightning tray icons (theme-aware, red dot recording, outline transcribing). App icon generated with our own nano-banana-pro ($0.134).
+- Rules codified in hub PLAYBOOK 3c (cloud-first) + 3d (full rebrand).

@@ -51,6 +51,40 @@ fn cloud_config(app: &AppHandle) -> Option<(String, String)> {
     }
 }
 
+/// Cloud-first mode: the FlyMy.AI agent does the transcription (and the Notion
+/// filing) - active when cloud is configured and NO local model is selected.
+/// Picking a local model in advanced settings restores the local-instant path.
+pub fn cloud_only_mode(app: &AppHandle) -> bool {
+    let settings = get_settings(app);
+    settings.selected_model.is_empty() && cloud_config(app).is_some()
+}
+
+/// Synchronous (awaited) cloud transcription for the paste path: upload the
+/// WAV, run the agent, return the cleaned text. The agent also files the note
+/// to Notion server-side - the app never talks to Notion itself.
+pub async fn transcribe_via_cloud(app: &AppHandle, wav_path: PathBuf) -> Result<String, String> {
+    let (api_key, agent_uuid) =
+        cloud_config(app).ok_or("FlyMy.AI cloud is not configured (API key / agent id)")?;
+    let result = file_voice_note(&api_key, &agent_uuid, &wav_path).await?;
+    if let Some(text) = result["text"].as_str() {
+        let keywords = result["keywords"]
+            .as_array()
+            .map(|a| a.iter().filter_map(|k| k.as_str()).collect::<Vec<_>>().join(", "))
+            .unwrap_or_default();
+        info!(
+            "WhisperFly: cloud transcription done [{}] {}",
+            keywords,
+            result["notion_url"].as_str().unwrap_or("")
+        );
+        Ok(text.to_string())
+    } else {
+        Err(result["error"]
+            .as_str()
+            .unwrap_or("agent returned no text")
+            .to_string())
+    }
+}
+
 /// Spawn the detached cloud-filing task. Call after the WAV is saved; never
 /// blocks or fails the local transcription flow.
 pub fn spawn_file_voice_note(app: &AppHandle, wav_path: PathBuf) {

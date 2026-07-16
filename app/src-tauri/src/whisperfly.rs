@@ -194,3 +194,51 @@ async fn file_voice_note(api_key: &str, agent_uuid: &str, wav: &PathBuf) -> Resu
     }
     Err(format!("run {} timed out", execution_id))
 }
+
+/// Resolve whatever the user pasted as "agent id" into a runnable task uuid.
+/// Accepts: a task uuid (returned as-is), or a share/chat id like
+/// "abc-defg-hij" (the tail of app.flymy.ai/agents/chat/<id>) which is an
+/// EXECUTION id - resolved via the API to its owning task uuid. Users paste
+/// the chat id constantly (we did too), so the app must just handle it.
+#[tauri::command]
+#[specta::specta]
+pub async fn resolve_flymyai_agent(reference: String, api_key: String) -> Result<String, String> {
+    let r = reference.trim().trim_end_matches('/').to_string();
+    let r = r.rsplit('/').next().unwrap_or(&r).to_string(); // tolerate full URLs
+    let is_uuid = r.len() == 36
+        && r.chars().enumerate().all(|(i, c)| match i {
+            8 | 13 | 18 | 23 => c == '-',
+            _ => c.is_ascii_hexdigit(),
+        });
+    if is_uuid {
+        return Ok(r);
+    }
+    let looks_like_chat_id =
+        r.len() >= 8 && r.chars().all(|c| c.is_ascii_lowercase() || c == '-') && r.contains('-');
+    if !looks_like_chat_id {
+        return Err("Not an agent uuid or a chat link id".to_string());
+    }
+    let key = api_key.trim();
+    if key.is_empty() {
+        return Err("Set the API key first - it is needed to resolve a chat id".to_string());
+    }
+    let client = reqwest::Client::builder()
+        .timeout(Duration::from_secs(20))
+        .build()
+        .map_err(|e| e.to_string())?;
+    let st: Value = client
+        .get(format!("{}/agents/executions/{}/", backend_base(), r))
+        .header("X-API-KEY", key)
+        .send()
+        .await
+        .map_err(|e| format!("resolve: {e}"))?
+        .error_for_status()
+        .map_err(|_| "Chat id not found on your account - clone the agent first, then paste YOUR copy's id".to_string())?
+        .json()
+        .await
+        .map_err(|e| format!("resolve json: {e}"))?;
+    st["user_agent_task_uuid"]
+        .as_str()
+        .map(str::to_string)
+        .ok_or_else(|| "Could not resolve the chat id to an agent".to_string())
+}

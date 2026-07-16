@@ -11,7 +11,10 @@ import { ModelStateEvent, RecordingErrorEvent } from "./lib/types/events";
 import "./App.css";
 import AccessibilityPermissions from "./components/AccessibilityPermissions";
 import Footer from "./components/footer";
-import Onboarding, { AccessibilityOnboarding } from "./components/onboarding";
+import Onboarding, {
+  AccessibilityOnboarding,
+  CloudOnboarding,
+} from "./components/onboarding";
 import { Sidebar, SidebarSection, SECTIONS_CONFIG } from "./components/Sidebar";
 import { WhatsNewGate } from "./components/whats-new";
 import { useSettings } from "./hooks/useSettings";
@@ -19,7 +22,7 @@ import { useSettingsStore } from "./stores/settingsStore";
 import { commands } from "@/bindings";
 import { getLanguageDirection, initializeRTL } from "@/lib/utils/rtl";
 
-type OnboardingStep = "accessibility" | "model" | "done";
+type OnboardingStep = "accessibility" | "cloud" | "model" | "done";
 
 const renderSettingsContent = (section: SidebarSection) => {
   const ActiveComponent =
@@ -240,13 +243,20 @@ function App() {
 
   const handleAccessibilityComplete = () => {
     // Cloud-first: no model selection at install - the FlyMy.AI agent
-    // transcribes in the cloud. Local models live in Settings (advanced).
+    // transcribes in the cloud. New users get the guided cloud setup;
+    // local models live in Settings (advanced).
     if (!isReturningUser) {
       commands.changeOnboardingCompletedSetting(true).catch((e) => {
         console.warn("Failed to persist onboarding completion:", e);
       });
-      setCurrentSection("cloud");
+      setOnboardingStep("cloud");
+      return;
     }
+    setOnboardingStep("done");
+  };
+
+  const handleCloudOnboardingComplete = () => {
+    setCurrentSection("cloud");
     setOnboardingStep("done");
   };
 
@@ -288,6 +298,8 @@ function App() {
     content = (
       <AccessibilityOnboarding onComplete={handleAccessibilityComplete} />
     );
+  } else if (onboardingStep === "cloud") {
+    content = <CloudOnboarding onComplete={handleCloudOnboardingComplete} />;
   } else if (onboardingStep === "model") {
     content = <Onboarding onModelSelected={handleModelSelected} />;
   } else {

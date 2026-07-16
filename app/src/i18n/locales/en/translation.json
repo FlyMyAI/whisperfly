@@ -671,5 +671,27 @@
   "overlay": {
     "transcribing": "Transcribing...",
     "processing": "Processing..."
+  },
+  "cloudOnboarding": {
+    "subtitle": "Connect your FlyMy.AI account - two steps, one minute",
+    "step1": {
+      "title": "1. Paste your FlyMy.AI API key",
+      "description": "Sign up (free) and copy your API key from your profile. It stays on this Mac.",
+      "button": "Open flymy.ai",
+      "placeholder": "fly-..."
+    },
+    "step2": {
+      "title": "2. Clone the WhisperFly agent",
+      "description": "Open the public agent, press Copy to clone it to YOUR account, then paste the id from your copy's page URL (or the agent uuid) here.",
+      "button": "Open the public agent",
+      "placeholder": "id from the URL of YOUR copy"
+    },
+    "errors": {
+      "badKey": "The key should start with fly-",
+      "noAgent": "Paste your cloned agent's id"
+    },
+    "skip": "Skip for now",
+    "finish": "Finish setup",
+    "checking": "Checking..."
   }
 }

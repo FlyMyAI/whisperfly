@@ -7,6 +7,7 @@ import { ToggleSwitch } from "../../ui/ToggleSwitch";
 import { Input } from "../../ui/Input";
 import { ApiKeyField } from "../PostProcessingSettingsApi/ApiKeyField";
 import { useSettings } from "../../../hooks/useSettings";
+import { commands } from "@/bindings";
 
 /**
  * FlyMy.AI Cloud: ship every finished voice note to a FlyMyAI agent
@@ -67,7 +68,19 @@ export const CloudSettings: React.FC = () => {
         >
           <AgentUuidField
             value={getSetting("flymyai_agent_uuid") || ""}
-            onBlur={(value) => updateSetting("flymyai_agent_uuid", value)}
+            onBlur={async (value) => {
+              const v = value.trim();
+              if (!v) return;
+              // Accept the chat-link id too and resolve it to the agent uuid.
+              const resolved = await commands.resolveFlymyaiAgent(
+                v,
+                getSetting("flymyai_api_key") || "",
+              );
+              updateSetting(
+                "flymyai_agent_uuid",
+                resolved.status === "ok" ? resolved.data : v,
+              );
+            }}
             placeholder={t("settings.cloud.agentUuid.placeholder")}
           />
         </SettingContainer>

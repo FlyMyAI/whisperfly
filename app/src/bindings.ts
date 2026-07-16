@@ -77,6 +77,14 @@ async changeOnboardingCompletedSetting(completed: boolean) : Promise<Result<null
     else return { status: "error", error: e  as any };
 }
 },
+async resolveFlymyaiAgent(reference: string, apiKey: string) : Promise<Result<string, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("resolve_flymyai_agent", { reference, apiKey }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
 async changeAudioFeedbackVolumeSetting(volume: number) : Promise<Result<null, string>> {
     try {
     return { status: "ok", data: await TAURI_INVOKE("change_audio_feedback_volume_setting", { volume }) };

@@ -1,9 +1,17 @@
 # WhisperFly 🎙️
 
+[![part of Build with FlyMy.AI](https://img.shields.io/badge/part%20of-Build%20with%20FlyMy.AI-b6ff3b?style=flat-square&labelColor=0b0d10)](https://github.com/FlyMyAI/build-with-flymyai)
+
 **We killed Wispr Flow.** Built this app from **one prompt** - Claude as the builder, **FlyMy.AI cloud** as the backend.
 
 - **Safe**: no telemetry, no third-party APIs in the app - it talks ONLY to your FlyMy.AI account; the agent holds the Notion credentials server-side. Optional fully-local offline mode (pick a model in advanced settings).
 - **Cheap**: no subscription. **$0.031 per note** on our real bill (transcription + cleanup + tags + Notion filing included) - a heavy month is ~$3-6 vs their $144-180/yr, and nothing to install-time-download.
+
+## How it got built: one prompt in your terminal
+
+<img src="docs/one-prompt.gif" alt="connect the FlyMy.AI MCP, type one prompt, the cloud hosts the agent" width="820">
+
+Connect the MCP once, say what app you want, and the agent is created, run and hosted in the FlyMy.AI cloud - you get back a frozen endpoint and the real bill. (Recreated from [BUILD_LOG.md](BUILD_LOG.md): frozen compilation 244, verified $0.031/note, 29s.)
 
 ## How we did it
 
@@ -62,6 +70,16 @@ Send them the dmg. First launch walks them through everything: grant permissions
 Quality, honestly: top STT engines sit within 1-2 points of each other - we don't claim "more accurate". We claim a **custom dictionary** for your jargon (their #1 complaint), an editable cleanup prompt, and routing rules you own.
 
 Everything else - full timestamped build history, real billed prices, every bug and naming detour - is in [BUILD_LOG.md](BUILD_LOG.md). Adapting via Claude? Read [CLAUDE.md](CLAUDE.md).
+
+## Part of Build with FlyMy.AI
+
+WhisperFly is one demo in **[Build with FlyMy.AI](https://github.com/FlyMyAI/build-with-flymyai)** - a series where each app rebuilds a venture-funded product from a single prompt, with Claude as the builder and the FlyMy.AI agentic cloud as the backend, and publishes the real bill. The umbrella repo holds the shared playbook, the agent rules and the other demos:
+
+- **WhisperFly** (you are here) - dictation straight into Notion, ~$0.03 a note
+- [replifly](https://github.com/FlyMyAI/replifly) - "deploy my code to prod" on your own accounts
+- [higfly](https://github.com/FlyMyAI/higfly) - cinematic AI video, ~$0.20-0.50 a clip
+
+Want to build your own kill? Start with the [playbook](https://github.com/FlyMyAI/build-with-flymyai/blob/main/PLAYBOOK.md).
 
 ## License
 

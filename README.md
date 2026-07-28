@@ -2,7 +2,16 @@
 
 [![part of Build with FlyMy.AI](https://img.shields.io/badge/part%20of-Build%20with%20FlyMy.AI-b6ff3b?style=flat-square&labelColor=0b0d10)](https://github.com/FlyMyAI/build-with-flymyai)
 
-**We killed Wispr Flow.** Built this app from **one prompt** - Claude as the builder, **FlyMy.AI cloud** as the backend.
+**We killed Wispr Flow.** WhisperFly is a working replacement: you hit a hotkey, speak, and a cleaned-up, tagged note lands in your Notion - **$0.031 a note** instead of $12-15 every month. It exists because nobody had to build the hard part. The entire AI backend behind it - transcription, cleanup, tagging, filing into Notion - was *described in plain text* on [FlyMy.AI](https://flymy.ai/media), assembled into an agent, frozen into an API and hosted there, in one sitting. No servers, no model keys in the app, no pipeline code. That is the real headline: **a full-featured clone of a $700M product is now an afternoon of typing** - and the same infrastructure is sitting there for whatever you want to rebuild next.
+
+Here is the whole build, verbatim - paste it into a coding agent with the FlyMy.AI MCP connected:
+
+```text
+Claude, build me a dictation backend on FlyMy.AI: I record audio, an agent
+transcribes it, cleans up the text, tags it and files it into my Notion.
+Freeze it into an API, host it, then give me a tiny local client that sends
+the audio and shows the Notion link. Tell me the real cost per note. Go.
+```
 
 - **Safe**: no telemetry, no third-party APIs in the app - it talks ONLY to your FlyMy.AI account; the agent holds the Notion credentials server-side. Optional fully-local offline mode (pick a model in advanced settings).
 - **Cheap**: no subscription. **$0.031 per note** on our real bill (transcription + cleanup + tags + Notion filing included) - a heavy month is ~$3-6 vs their $144-180/yr, and nothing to install-time-download.

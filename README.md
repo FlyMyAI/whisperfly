@@ -2,7 +2,11 @@
 
 [![part of Build with FlyMy.AI](https://img.shields.io/badge/part%20of-Build%20with%20FlyMy.AI-b6ff3b?style=flat-square&labelColor=0b0d10)](https://github.com/FlyMyAI/build-with-flymyai)
 
-**We killed Wispr Flow.** WhisperFly is a working replacement: you hit a hotkey, speak, and a cleaned-up, tagged note lands in your Notion - **$0.031 a note** instead of $12-15 every month. It exists because nobody had to build the hard part. The entire AI backend behind it - transcription, cleanup, tagging, filing into Notion - was *described in plain text* on [FlyMy.AI](https://flymy.ai/media), assembled into an agent, frozen into an API and hosted there, in one sitting. No servers, no model keys in the app, no pipeline code. That is the real headline: **a full-featured clone of a $700M product is now an afternoon of typing** - and the same infrastructure is sitting there for whatever you want to rebuild next.
+**We killed Wispr Flow.** A working clone of a $700M product, built from ~one prompt on the infra that is live at [flymy.ai/media](https://flymy.ai/media/).
+
+Hold a hotkey, talk, let go. The note comes back transcribed, cleaned up, tagged and filed in the right Notion database. **$0.031 a note** on our real bill, instead of $12-15 every month.
+
+Nobody wrote a pipeline. FlyMy.AI is text-programmable AI infrastructure: you describe the AI backend in plain words, and it gets built, frozen into an API and hosted for you in minutes. No servers, no model keys in the app, no deploy. Want it to file into your own stack instead of Notion? Change the text.
 
 Here is the whole build, verbatim - paste it into a coding agent with the FlyMy.AI MCP connected:
 
@@ -33,7 +37,7 @@ flowchart LR
     end
 
     APP -->|audio| CLOUD
-    subgraph CLOUD["☁️ FlyMy.AI cloud agent — the engine"]
+    subgraph CLOUD["☁️ FlyMy.AI cloud agent - the engine"]
         STT["cloud STT → cleanup →<br/>keywords → file it"]
     end
 
